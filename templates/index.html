@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+
+    <section class="hero" id="buscador">
+        <h1> Buscador de Series </h1>
+        <p> Buscá una serie por nombre y consultamos sus datos en TVMaze. </p>
+
+
+        <form class="buscador" action="{{ url_for('buscar') }}"  method="get">
+            <input type="text" name="nombre" placeholder="Ej. Los Simuladores" maxlength="100" required autofocus>
+            <button class="boton" type="submit"> Buscar </button>
+        </form>
+    </section>
+
+    <!-- Accesos rápidos a cada sección del proyecto -->
+    <section class="secciones">
+        <a class="tarjeta-seccion" href="#buscador">
+            <h2>Buscar</h2>
+            <p>Encontrá cualquier serie y mirá su género, rating, estado y resumen.</p>
+        </a>
+        <a class="tarjeta-seccion" href="{{ url_for('favoritos') }}">
+            <h2>Mis favoritos</h2>
+            <p>Revisá las series que guardaste y eliminá las que ya no quieras.</p>
+        </a>
+    </section>
+
+
+{% endblock %}

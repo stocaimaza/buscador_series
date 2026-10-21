@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block titulo %}Mis favoritos{% endblock %}
+
+{% block contenido %}
+    <h1 class="titulo-seccion">Mi lista de favoritos </h1>
+    {% if favoritos %}
+        <ul class="grilla">
+            {% for id, nombre, genero, rating, imagen in favoritos %}
+            <li class="tarjeta">
+                <a href="{{ url_for('serie', nombre=nombre) }}" class="tarjeta-poster">
+                    {% if imagen %}
+                        <img src="{{imagen}}" alt="{{nombre}}">
+                    {% else %}
+                        <div class="sin-imagen">Sin imagen</div>
+                    {% endif %}
+                </a>
+                <div class="tarjeta-info">
+                    <strong> {{nombre}} </strong>
+                    <span class="tarjeta-datos">{{ genero }} · ★ {{ rating }}</span>
+                    <!-- Faltaba method="post": la ruta solo acepta POST -->
+                    <form action="{{ url_for('eliminar_favorito', id_favorito=id) }}" method="post">
+                        <button class="boton boton-peligro" type="submit"> Eliminar favorito </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <section class="vacio">
+            <p>Todavía no agregaste nada a favoritos </p>
+            <a class="boton" href="{{ url_for('inicio') }}#buscador"> Buscar series </a>
+        </section>
+    {% endif %}
+
+{% endblock %}

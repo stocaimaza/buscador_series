@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Buscador de Series{% endblock %} · Series+</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+    <!-- Menú de navegación: aparece en todas las páginas -->
+    <header class="nav">
+        <a class="nav-logo" href="{{ url_for('inicio') }}">Series<span>+</span></a>
+
+        <!-- Checkbox oculto: en celulares abre/cierra el menú sin usar JavaScript -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle">
+        <label for="nav-toggle" class="nav-hamburguesa" aria-label="Abrir menú">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav class="nav-menu">
+            <a href="{{ url_for('inicio') }}" class="{% if request.endpoint == 'inicio' %}activo{% endif %}">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
+                Inicio
+            </a>
+            <a href="{{ url_for('inicio') }}#buscador" class="{% if request.endpoint == 'serie' %}activo{% endif %}">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 0 1 6.32 12.9l5.39 5.4-1.41 1.4-5.4-5.39A8 8 0 1 1 10 2zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/></svg>
+                Buscar
+            </a>
+            <a href="{{ url_for('favoritos') }}" class="{% if request.endpoint == 'favoritos' %}activo{% endif %}">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21l-1.45-1.32C5.4 15.03 2 11.95 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09A6 6 0 0 1 16.5 3C19.58 3 22 5.42 22 8.5c0 3.45-3.4 6.53-8.55 11.18z"/></svg>
+                Mis favoritos
+            </a>
+        </nav>
+
+        <!-- Buscador rápido dentro del menú -->
+        <form class="nav-buscar" action="{{ url_for('buscar') }}" method="get">
+            <input type="search" name="nombre" placeholder="Buscar serie..." maxlength="100" required aria-label="Buscar serie">
+        </form>
+    </header>
+
+    <main class="contenedor">
+        <!-- Mensajes que mandamos desde app.py con flash() -->
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% if mensajes %}
+                <div class="mensajes">
+                    {% for categoria, mensaje in mensajes %}
+                        <div class="mensaje mensaje-{{ categoria }}">{{ mensaje }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block contenido %} {% endblock %}
+    </main>
+
+    <footer class="pie">
+        Datos provistos por <a href="https://www.tvmaze.com/" target="_blank" rel="noopener">TVMaze</a>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,383 @@
+/* ==========================================================
+   Estilos del Buscador de Series — temática Disney+
+   ========================================================== */
+
+/* Paleta de colores de Disney+ */
+:root {
+    --fondo-profundo: #040714;
+    --fondo: #1a1d29;
+    --fondo-nav: #090b13;
+    --superficie: #31343e;
+    --azul: #0063e5;
+    --azul-hover: #0483ee;
+    --texto: #f9f9f9;
+    --texto-secundario: #cacaca;
+    --borde: rgba(249, 249, 249, 0.1);
+    --borde-hover: rgba(249, 249, 249, 0.8);
+    --sombra: rgba(0, 0, 0, 0.69) 0px 26px 30px -10px, rgba(0, 0, 0, 0.73) 0px 16px 10px -10px;
+    --rojo: #e5484d;
+    --verde: #30a46c;
+    --radio: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: "Nunito Sans", "Avenir", system-ui, sans-serif;
+    color: var(--texto);
+    background-color: var(--fondo);
+    background-image: radial-gradient(ellipse at top, #192133 0%, var(--fondo) 55%, var(--fondo-profundo) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Menú de navegación ---------- */
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 72px;
+    padding: 0 36px;
+    background: var(--fondo-nav);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.nav-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.nav-logo span {
+    background: linear-gradient(135deg, #02e7f5, var(--azul));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 28px;
+    flex: 1;
+}
+
+.nav-menu a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.nav-menu svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Subrayado animado, igual al menú de Disney+ */
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    border-radius: 0 0 4px 4px;
+    background: var(--texto);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-menu a:hover::after,
+.nav-menu a.activo::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+.nav-buscar input {
+    width: 220px;
+    padding: 8px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    background: rgba(249, 249, 249, 0.08);
+    color: var(--texto);
+    font: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.nav-buscar input:focus {
+    outline: none;
+    border-color: var(--azul-hover);
+    background: rgba(249, 249, 249, 0.14);
+}
+
+.nav-toggle, .nav-hamburguesa { display: none; }
+
+/* ---------- Contenido general ---------- */
+.contenedor {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 36px;
+}
+
+.titulo-seccion {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+}
+
+/* ---------- Botones ---------- */
+.boton {
+    display: inline-block;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    background: var(--azul);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.boton:hover { background: var(--azul-hover); }
+
+.boton-secundario {
+    background: rgba(249, 249, 249, 0.1);
+    border: 1px solid var(--texto);
+}
+
+.boton-secundario:hover { background: var(--texto); color: var(--fondo-profundo); }
+
+.boton-peligro {
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--borde);
+    font-size: 0.75rem;
+}
+
+.boton-peligro:hover { background: var(--rojo); border-color: var(--rojo); }
+
+/* ---------- Mensajes flash ---------- */
+.mensajes { display: grid; gap: 10px; margin-bottom: 24px; }
+
+.mensaje {
+    padding: 12px 18px;
+    border-radius: var(--radio);
+    border-left: 4px solid var(--azul);
+    background: var(--superficie);
+}
+
+.mensaje-error { border-left-color: var(--rojo); }
+.mensaje-exito { border-left-color: var(--verde); }
+
+/* ---------- Inicio ---------- */
+.hero {
+    padding: 64px 24px;
+    text-align: center;
+    border-radius: var(--radio);
+    background: linear-gradient(180deg, rgba(0, 99, 229, 0.18), transparent);
+    scroll-margin-top: 90px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.hero p { color: var(--texto-secundario); margin-bottom: 32px; }
+
+.buscador {
+    display: flex;
+    gap: 12px;
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.buscador input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px 18px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie);
+    color: var(--texto);
+    font: inherit;
+    font-size: 1rem;
+}
+
+.buscador input:focus { outline: 2px solid var(--azul-hover); border-color: transparent; }
+
+.secciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+}
+
+/* Tarjetas con borde y zoom al pasar el mouse, como en Disney+ */
+.tarjeta-seccion,
+.tarjeta {
+    border: 3px solid var(--borde);
+    border-radius: var(--radio);
+    background: var(--superficie);
+    box-shadow: var(--sombra);
+    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.tarjeta-seccion { padding: 28px; }
+.tarjeta-seccion h2 { margin-bottom: 6px; }
+.tarjeta-seccion p { color: var(--texto-secundario); }
+
+.tarjeta-seccion:hover,
+.tarjeta:hover {
+    transform: scale(1.04);
+    border-color: var(--borde-hover);
+}
+
+/* ---------- Detalle de una serie ---------- */
+.detalle {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.detalle-poster {
+    width: 100%;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.detalle-info h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 12px; }
+.detalle-info p { margin-bottom: 8px; color: var(--texto-secundario); }
+.detalle-info strong { color: var(--texto); }
+.detalle-info .resumen { margin: 20px 0 28px; color: var(--texto); max-width: 70ch; }
+
+.etiquetas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+.etiqueta {
+    padding: 4px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--texto-secundario);
+}
+
+.sin-imagen {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 2 / 3;
+    width: 100%;
+    background: var(--fondo-profundo);
+    color: var(--texto-secundario);
+    border-radius: var(--radio);
+}
+
+/* ---------- Favoritos ---------- */
+.grilla {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+}
+
+.tarjeta { overflow: hidden; display: flex; flex-direction: column; }
+
+.tarjeta-poster img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+
+.tarjeta-poster .sin-imagen { border-radius: 0; }
+
+.tarjeta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    flex: 1;
+}
+
+.tarjeta-info form { margin-top: auto; }
+
+.tarjeta-datos { font-size: 0.8rem; color: var(--texto-secundario); }
+
+/* ---------- Estados vacíos ---------- */
+.vacio {
+    text-align: center;
+    padding: 64px 24px;
+    color: var(--texto-secundario);
+}
+
+.vacio h1 { color: var(--texto); margin-bottom: 8px; }
+.vacio p { margin-bottom: 24px; }
+
+/* ---------- Pie de página ---------- */
+.pie {
+    padding: 24px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+    border-top: 1px solid var(--borde);
+}
+
+.pie a { color: var(--azul-hover); }
+
+/* ---------- Celulares y tablets ---------- */
+@media (max-width: 860px) {
+    .nav { padding: 0 16px; gap: 16px; flex-wrap: wrap; height: auto; min-height: 64px; }
+    .nav-logo { flex: 1; }
+    .nav-hamburguesa {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 8px;
+        order: 2;
+    }
+    .nav-hamburguesa span { width: 24px; height: 2px; background: var(--texto); border-radius: 2px; }
+    .nav-buscar { order: 1; }
+    .nav-buscar input { width: 150px; }
+
+    /* El menú se oculta y aparece al tocar la hamburguesa */
+    .nav-menu {
+        order: 3;
+        flex-basis: 100%;
+        flex-direction: column;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    .nav-menu a { padding: 14px 0; border-top: 1px solid var(--borde); }
+    .nav-menu a::after { display: none; }
+    .nav-menu a.activo { color: var(--azul-hover); }
+    .nav-toggle:checked ~ .nav-menu { max-height: 300px; }
+
+    .contenedor { padding: 24px 16px; }
+    .detalle { grid-template-columns: 1fr; gap: 24px; }
+    .detalle-poster { max-width: 240px; margin: 0 auto; }
+    .buscador { flex-direction: column; }
+    .grilla { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; }
+}

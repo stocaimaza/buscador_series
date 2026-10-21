@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ serie.nombre if encontrada else nombre }}{% endblock %}
+
+{% block contenido %}
+    {% if encontrada %}
+        <article class="detalle">
+            {% if serie.imagen %}
+                <img class="detalle-poster" src="{{serie.imagen}}" alt="{{serie.nombre}}">
+            {% else %}
+                <div class="detalle-poster sin-imagen">Sin imagen</div>
+            {% endif %}
+
+            <div class="detalle-info">
+                <h1> {{serie.nombre}} </h1>
+
+                <div class="etiquetas">
+                    {% for genero in serie.generos %}
+                        <span class="etiqueta">{{ genero }}</span>
+                    {% else %}
+                        <span class="etiqueta">Sin género</span>
+                    {% endfor %}
+                </div>
+
+                <p><strong>Rating: </strong> {{serie.rating if serie.rating else "Sin rating"}} </p>
+
+                <p><strong>Estado: </strong> {{serie.estado}} </p>
+
+                <p class="resumen"> {{serie.resumen}} </p>
+
+                {% if ya_favorito %}
+                    <a class="boton boton-secundario" href="{{ url_for('favoritos') }}"> Ya está en tus favoritos </a>
+                {% else %}
+                    <form action="{{url_for('agregar_favorito')}}" method="post">
+                        <input type="hidden" name="nombre" value="{{serie.nombre}}">
+                        <input type="hidden" name="genero" value="{{serie.generos | join(', ')}}">
+                        <input type="hidden" name="rating" value="{{serie.rating if serie.rating else ''}}">
+                        <input type="hidden" name="imagen" value="{{serie.imagen if serie.imagen else ''}}">
+                        <button class="boton" type="submit"> + Agregar a la lista de Favoritos </button>
+                    </form>
+                {% endif %}
+            </div>
+        </article>
+
+    {% else %}
+        <!-- Antes no se mostraba nada cuando la serie no existía -->
+        <section class="vacio">
+            <h1> No encontramos resultados </h1>
+            <p>{{ error if error else "No hay ninguna serie que coincida con «" ~ nombre ~ "»." }}</p>
+            <a class="boton" href="{{ url_for('inicio') }}#buscador"> Volver a buscar </a>
+        </section>
+    {% endif %}
+{% endblock %}
